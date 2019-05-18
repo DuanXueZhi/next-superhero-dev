@@ -54,3 +54,41 @@
 	text-overflow: ellipsis;
 }
 /* 热门超英 end */
+
+/* 热门预告 start */
+.hot-movies{
+	display: flex;
+	flex-direction: row;
+	flex-wrap: wrap;
+	justify-content: space-between;
+	padding: 0 20upx 20upx;
+}
+
+.hot-movie-single{
+	width: 350upx;
+	height: 220upx;
+	margin-top: 10upx;
+}
+/* 热门预告 end */
+
+/* 猜你喜欢 start */
+.guess-u-like{
+
+}
+
+.single-like-movie{
+
+}
+
+.poster{
+
+}
+
+.movie-desc{
+
+}
+
+.movie-oper{
+
+}
+/* 猜你喜欢 end */

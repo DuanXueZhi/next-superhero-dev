@@ -33,9 +33,7 @@
 				</view>
 			</view>
 		</view>
-		
 		<scroll-view scroll-x="true" class="page-block hot">
-			
 			<view class="single-poster" v-for="(superhero, index) in hotSuperheroList" :key="index">
 				<view class="poster-wapper">
 					<image :src="superhero.cover" class="poster"></image>
@@ -55,9 +53,51 @@
 					<trailerStar :innerScore="superhero.score" showNum="1"></trailerStar>
 				</view>
 			</view>
-			
 		</scroll-view>
 		<!-- 热门超英 end -->
+
+		<!-- 热门预告 start -->
+		<view class="page-block super-hot">
+			<view class="hot-title-wapper">
+				<image src="../../static/logo.png" class="hot-ico"></image>
+				<view class="hot-title">
+					热门预告
+				</view>
+			</view>
+		</view>
+		<view class="hot-movies page-block">
+			<video
+					v-for="(trailer, index) in hotTrailerList"
+					:src="trailer.trailer"
+					class="hot-movie-single"
+					controls></video>
+		</view>
+		<!-- 热门预告 end -->
+
+		<!-- 猜你喜欢 start -->
+		<view class="page-block super-hot">
+			<view class="hot-title-wapper">
+				<image src="../../static/logo.png" class="hot-ico"></image>
+				<view class="hot-title">
+					猜你喜欢
+				</view>
+			</view>
+		</view>
+
+		<view class="page-block guess-u-like">
+			<view class="single-like-movie">
+				<image :src="superhero.cover" class="poster"></image>
+
+				<view class="movie-desc">
+					<view class="movie-title"></view>
+					<trailerStar :innerScore="9.1" showNum="0"></trailerStar>
+					<view class="movie-title"></view>
+				</view>
+				<view class="movie-oper">
+
+				</view></view>
+		</view>
+		<!-- 猜你喜欢 end -->
 	</view>
 </template>
 
@@ -124,6 +164,24 @@
                         name: '蝙蝠侠蝙蝠侠蝙蝠侠蝙蝠侠蝙蝠侠',
                         score: 8.1
                     },
+				],
+                hotTrailerList: [
+					{
+                        trailer: require('../../static/video/8.7.mp4'),
+                        poster: require('../../static/logo.png')
+					},
+                    {
+                        trailer: require('../../static/video/8.7.mp4'),
+                        poster: require('../../static/logo.png')
+                    },
+                    {
+                        trailer: require('../../static/video/8.7.mp4'),
+                        poster: require('../../static/logo.png')
+                    },
+                    {
+                        trailer: require('../../static/video/8.7.mp4'),
+                        poster: require('../../static/logo.png')
+                    }
 				]
 			}
 		},
@@ -147,19 +205,32 @@
 				}
 			})
 			
-			// 查询热门超英
+			// 查询热门预告
 			uni.request({
-				url: serverUrl + '/index/movie/hot?type=superhero',
+				url: serverUrl + '/index/movie/hot?type=trailer',
 				method: 'POST',
 				success: (res) => {
 					// console.log(res.data)
-					
 					// 获取真实数据之前，务必判断状态是否为200
 					if (res.data.status === 200) {
-						vm.hotSuperheroList = res.data.data
+						vm.hotTrailerList = res.data.data
 					}
 				}
 			})
+
+            // 查询热门超英
+            uni.request({
+                url: serverUrl + '/index/movie/hot?type=superhero',
+                method: 'POST',
+                success: (res) => {
+                    // console.log(res.data)
+
+                    // 获取真实数据之前，务必判断状态是否为200
+                    if (res.data.status === 200) {
+                        vm.hotSuperheroList = res.data.data
+                    }
+                }
+            })
 		},
 		methods: {
 
