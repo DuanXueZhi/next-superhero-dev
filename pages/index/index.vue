@@ -69,6 +69,7 @@
 			<video
 					v-for="(trailer, index) in hotTrailerList"
 					:src="trailer.trailer"
+					:poster="trailer.poster"
 					class="hot-movie-single"
 					controls></video>
 		</view>
@@ -86,16 +87,28 @@
 
 		<view class="page-block guess-u-like">
 			<view class="single-like-movie">
-				<image :src="superhero.cover" class="poster"></image>
+				<image src="../../static/logo.png" class="like-movie"></image>
 
 				<view class="movie-desc">
-					<view class="movie-title"></view>
+					<view class="movie-title">
+						蝙蝠侠超人大战蝙蝠侠超人大战蝙蝠侠超人大战蝙蝠侠超人大战
+					</view>
 					<trailerStar :innerScore="9.1" showNum="0"></trailerStar>
-					<view class="movie-title"></view>
+					<view class="movie-info">
+						2018 / 美国 / 科幻 动作
+					</view>
+					<view class="movie-info">
+						本·安抚克莱 / 亨利·卡维尔 / 艾米·亚当斯 / 盖尔·加朵
+					</view>
 				</view>
-				<view class="movie-oper">
 
-				</view></view>
+				<view class="movie-oper">
+					<image src="../../static/logo.png" class="praise-ico"></image>
+					<view class="praise-me">
+						赞一下
+					</view>
+				</view>
+			</view>
 		</view>
 		<!-- 猜你喜欢 end -->
 	</view>
@@ -185,6 +198,7 @@
 				]
 			}
 		},
+
 		onLoad() {
 			let vm = this
 			
