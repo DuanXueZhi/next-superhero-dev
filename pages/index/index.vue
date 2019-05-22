@@ -17,7 +17,7 @@
 			</swiper-item>
 			<swiper-item>
 				<image src="http://www.pptok.com/wp-content/uploads/2012/08/xunguang-7.jpg" class="carousel"></image>
-			</swiper-item>
+			</swiper-item>77
 			<swiper-item>
 				<image src="http://www.pptok.com/wp-content/uploads/2012/08/xunguang-6.jpg" class="carousel"></image>
 			</swiper-item>
@@ -86,26 +86,27 @@
 		</view>
 
 		<view class="page-block guess-u-like">
-			<view class="single-like-movie">
-				<image src="../../static/logo.png" class="like-movie"></image>
-
+			<view class="single-like-movie" v-for="(guessMovieItem, guessMovieIndex) in guessULike" :key="guessMovieIndex">
+				<image :src="guessMovieItem.image" class="like-movie"></image>
 				<view class="movie-desc">
 					<view class="movie-title">
-						蝙蝠侠超人大战蝙蝠侠超人大战蝙蝠侠超人大战蝙蝠侠超人大战
+						{{guessMovieItem.title}}
 					</view>
 					<trailerStar :innerScore="9.1" showNum="0"></trailerStar>
 					<view class="movie-info">
-						2018 / 美国 / 科幻 动作
+						{{guessMovieItem.infoClass}}
 					</view>
 					<view class="movie-info">
-						本·安抚克莱 / 亨利·卡维尔 / 艾米·亚当斯 / 盖尔·加朵
+						{{guessMovieItem.infoActor}}
 					</view>
 				</view>
-
-				<view class="movie-oper">
+				<view class="movie-oper" :data-guessMovieIndex="guessMovieIndex" @tap="praiseMe">
 					<image src="../../static/logo.png" class="praise-ico"></image>
 					<view class="praise-me">
 						赞一下
+					</view>
+					<view :animation="animationData[guessMovieIndex]" class="praise-me animation-opacity">
+						+1
 					</view>
 				</view>
 			</view>
@@ -195,13 +196,59 @@
                         trailer: require('../../static/video/8.7.mp4'),
                         poster: require('../../static/logo.png')
                     }
+				],
+				guessULike: [ // 猜你喜欢
+					{
+					    image: require('../../static/logo.png'),
+						title: '蝙蝠侠超人大战蝙蝠侠超人大战蝙蝠侠超人大战蝙蝠侠超人大战',
+						infoClass: '2018 / 美国 / 科幻 动作',
+						infoActor: '本·安抚克莱 / 亨利·卡维尔 / 艾米·亚当斯 / 盖尔·加朵',
+					},
+                    {
+                        image: require('../../static/logo.png'),
+                        title: '蝙蝠侠超人大战蝙蝠侠超人大战蝙蝠侠超人大战蝙蝠侠超人大战',
+                        infoClass: '2018 / 美国 / 科幻 动作',
+                        infoActor: '本·安抚克莱 / 亨利·卡维尔 / 艾米·亚当斯 / 盖尔·加朵',
+                    },
+                    {
+                        image: require('../../static/logo.png'),
+                        title: '蝙蝠侠超人大战蝙蝠侠超人大战蝙蝠侠超人大战蝙蝠侠超人大战',
+                        infoClass: '2018 / 美国 / 科幻 动作',
+                        infoActor: '本·安抚克莱 / 亨利·卡维尔 / 艾米·亚当斯 / 盖尔·加朵',
+                    },
+                    {
+                        image: require('../../static/logo.png'),
+                        title: '蝙蝠侠超人大战蝙蝠侠超人大战蝙蝠侠超人大战蝙蝠侠超人大战',
+                        infoClass: '2018 / 美国 / 科幻 动作',
+                        infoActor: '本·安抚克莱 / 亨利·卡维尔 / 艾米·亚当斯 / 盖尔·加朵',
+                    },
+                    {
+                        image: require('../../static/logo.png'),
+                        title: '蝙蝠侠超人大战蝙蝠侠超人大战蝙蝠侠超人大战蝙蝠侠超人大战',
+                        infoClass: '2018 / 美国 / 科幻 动作',
+                        infoActor: '本·安抚克莱 / 亨利·卡维尔 / 艾米·亚当斯 / 盖尔·加朵',
+                    },
+                    {
+                        image: require('../../static/logo.png'),
+                        title: '蝙蝠侠超人大战蝙蝠侠超人大战蝙蝠侠超人大战蝙蝠侠超人大战',
+                        infoClass: '2018 / 美国 / 科幻 动作',
+                        infoActor: '本·安抚克莱 / 亨利·卡维尔 / 艾米·亚当斯 / 盖尔·加朵',
+                    }
+                ],
+
+				animationData: {},
+				animationDataArr: [
+					{}, {}, {}, {}, {}, {}
 				]
 			}
 		},
 
 		onLoad() {
 			let vm = this
-			
+
+			// 在页面创建的时候，创建一个临时动画对象
+			this.animation = uni.createAnimation()
+
 			// 获取common.js中的服务器地址
 			let serverUrl = common.serverUrl
 			
@@ -245,9 +292,52 @@
                     }
                 }
             })
+
+            // 查询猜你喜欢
+            uni.request({
+                url: serverUrl + '',
+                method: 'POST',
+                success: (res) => {
+                    // console.log(res.data)
+
+                    // 获取真实数据之前，务必判断状态是否为200
+                    if (res.data.status === 200) {
+                        vm.guessULike = res.data.data
+                    }
+                }
+            })
 		},
 		methods: {
+			// 实现点赞动画
+            praiseMe (e) {
+                let gIndex = e.currentTarget.dataset.guessmoiveindex
+				console.log(gIndex)
+                return
+                // 构建动画数据，并且通过step表示动画的完成
+                this.animation
+					.translateY(-60)
+					.opacity(1)
+					.step({duration: 400}) // 建立动画
 
+				// 导出动画数据到view组件，实现组建的动画效果
+				// this.animationData = this.animation.export()
+				this.animationData = this.animation.export()
+				this.animationDataArr[gIndex] = this.animationData.export()
+
+				// 还原动画
+				setTimeout(function () {
+					this.animation
+						.translateY(0)
+						.opacity(0)
+						.step({duration: 0})
+				}.bind(this), 500)
+                // this.animationData = this.animation.export()
+                this.animationDataArr[gIndex] = this.animationData.export()
+            }
+		},
+		onUnload () {
+		    // 页面卸载时候清除动画数据
+		    this.animationData = {}
 		}
 	}
 </script>

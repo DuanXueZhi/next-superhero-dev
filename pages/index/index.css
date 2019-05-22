@@ -110,7 +110,7 @@
 	flex-direction: column;
 	justify-content: center;
 
-	border-left: 1px dashed #feab2a;
+	border-left: 2px dashed #feab2a7d;
 }
 
 .praise-ico{
@@ -123,6 +123,11 @@
 	font-size: 14px;
 	color: #feab2a;
 	align-self: center;
+}
+
+.animation-opacity{
+	font-weight: bold;
+	opacity: 1;
 }
 
 /* 猜你喜欢 end */
