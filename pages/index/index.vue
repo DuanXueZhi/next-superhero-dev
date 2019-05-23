@@ -11,7 +11,7 @@
 			* autoplay: 是否自动切换
 			* interval: 自动切换时间【5000】
 			* duration: 滑动时长【500】
-			*  -->
+			*  -->7
 			<swiper-item> <!-- 仅可放置在swiper组件中，宽高自动设置为100% -->
 				<image src="http://www.pptok.com/wp-content/uploads/2012/08/xunguang-9.jpg" class="carousel"></image>
 			</swiper-item>
@@ -246,8 +246,10 @@
 		onLoad() {
 			let vm = this
 
+			// #ifdef APP-PLUS || MP-WEIXIN
 			// 在页面创建的时候，创建一个临时动画对象
 			this.animation = uni.createAnimation()
+			// #endif
 
 			// 获取common.js中的服务器地址
 			let serverUrl = common.serverUrl
@@ -310,6 +312,7 @@
 		methods: {
 			// 实现点赞动画
             praiseMe (e) {
+                // #ifdef APP-PLUS || MP-WEIXIN
                 let gIndex = e.currentTarget.dataset.guessmoiveindex
 				console.log(gIndex)
                 return
@@ -333,6 +336,7 @@
 				}.bind(this), 500)
                 // this.animationData = this.animation.export()
                 this.animationDataArr[gIndex] = this.animationData.export()
+            	// #endif
             }
 		},
 		onUnload () {
