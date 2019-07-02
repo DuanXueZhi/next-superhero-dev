@@ -11,7 +11,7 @@
 			* autoplay: 是否自动切换
 			* interval: 自动切换时间【5000】
 			* duration: 滑动时长【500】
-			*  -->7
+			*  -->
 			<swiper-item> <!-- 仅可放置在swiper组件中，宽高自动设置为100% -->
 				<image src="http://www.pptok.com/wp-content/uploads/2012/08/xunguang-9.jpg" class="carousel"></image>
 			</swiper-item>
@@ -68,6 +68,7 @@
 		<view class="hot-movies page-block">
 			<video
 					v-for="(trailer, index) in hotTrailerList"
+					:key="index"
 					:src="trailer.trailer"
 					:poster="trailer.poster"
 					class="hot-movie-single"
@@ -112,6 +113,10 @@
 			</view>
 		</view>
 		<!-- 猜你喜欢 end -->
+
+		<!-- test start -->
+		<span @tap="testUploadImage">上传图片</span>
+		<!-- test end -->
 	</view>
 </template>
 
@@ -337,7 +342,64 @@
                 // this.animationData = this.animation.export()
                 this.animationDataArr[gIndex] = this.animationData.export()
             	// #endif
-            }
+            },
+
+			// test上传图片
+			testUploadImage () {
+				uni.chooseImage({
+					success: (chooseImageRes) => {
+						const tempFilePaths = chooseImageRes.tempFilePaths;
+						console.log(JSON.stringify(tempFilePaths))
+
+						let body = {
+							OrganizationID: 1,
+							AddByUserID: 1182227080, // 发布者ID
+							Tag: [{Tag: '标签'}, {Tag: '标签'}], // 内容标签
+							BlogType: 1, // 成长记录类别
+							Content: 'neirong', // 内容
+						}
+
+						let uri = tempFilePaths.map((value, index) => {
+							return {
+								name: "image" + index,
+								uri: value
+							}
+						});
+						console.log(JSON.stringify(uri))
+
+						uni.uploadFile({
+							url: 'http://api.mpb.womenqunaer.cn/blog/create',
+							files: uri,
+							name: 'uri',
+							formData: body,
+							header:{
+								"Content-Type": "multipart/form-data",
+								"AuthKey": "test1authkey",
+								"Token": 'b670a1a3b87dff2490e19ec1523e33d1'
+							},
+							success: (res) => {
+								console.log(JSON.stringify(res))
+								if (res.statusCode === 200) {
+									uni.showToast({
+										title: "反馈成功!"
+									});
+								}
+							}
+						})
+
+						// uploadTask.onProgressUpdate((res) => {
+						// 	console.log('上传进度' + res.progress);
+						// 	console.log('已经上传的数据长度' + res.totalBytesSent);
+						// 	console.log('预期需要上传的数据总长度' + res.totalBytesExpectedToSend);
+						//
+						// 	// 测试条件，取消上传任务。
+						// 	if (res.progress > 50) {
+						// 		uploadTask.abort();
+						// 	}
+						// });
+					}
+				});
+			}
 		},
 		onUnload () {
 		    // 页面卸载时候清除动画数据
